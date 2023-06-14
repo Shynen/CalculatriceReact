@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import "../src/Style/Calculatrice.scss"
 import Calc from "../src/assets/calculatrice.png"
+
 const Cal = () => {
     const [cal, setCal] = useState("");
     const [result, setResult] = useState("");
@@ -21,6 +22,54 @@ const Cal = () => {
         catch{
             setResult("Error");
         }
+    }
+
+    function replacer(str) {
+      const scndBtn = document.getElementById("scndBtn");
+      const degRadBtn = document.getElementById("degRadBtn");
+      if (scndBtn.classList.contains("buttonsSec")) {
+        var pairs = {
+          acos: "Math.acos",
+          asin: "Math.asin",
+          atan: "Math.atan",
+          lg: "Math.log10",
+          ln: "Math.log",
+          π: "Math.PI",
+          e: "Math.E",
+          "√": "Math.sqrt",
+        };
+      } else if (
+        !scndBtn.classList.contains("buttonsSec") &&
+        degRadBtn.value == "deg"
+      ) {
+        var pairs = {
+          cos: "dTrig(Math.cos,",
+          sin: "dTrig(Math.sin,",
+          tan: "dTrig(Math.tan,",
+          lg: "Math.log10",
+          ln: "Math.log",
+          π: "Math.PI",
+          e: "Math.E",
+          "√": "Math.sqrt",
+        };
+      } else {
+        var pairs = {
+          cos: "Math.cos",
+          sin: "Math.sin",
+          tan: "Math.tan",
+          lg: "Math.log10",
+          ln: "Math.log",
+          π: "Math.PI",
+          e: "Math.E",
+          "√": "Math.sqrt",
+        };
+      }
+    
+      Object.keys(pairs).forEach(function (key) {
+        let str = str.split(key).join(pairs[key]);
+      });
+console.log(str)
+      return setResult(str);
     }
   // fais passer le cosinus / sinus / tangente avec le 2nd  et l'enleve en repassage
 
@@ -53,8 +102,27 @@ function getFactoriel() {
   return setResult(result)
 }
 
+function onX() {
+  let table = []; // initialise tab
+  for(let valeurs of cal) { // pour chaque valeur dans le display
+    table.push(valeurs); // push les valeur dans le tab
+    parseFloat(valeurs); // transforme le string en number
+  }
+    let resultat = "";
+    resultat = 1 / [table[0]];
+    return setResult(resultat);
+  }
 
 // #Passage calculatrice Scientifique / standard
+
+function Pi() {
+  let result= cal*Math.PI
+  return setResult(result)
+}
+function Exponential() {
+  let result= cal*Math.E
+  return setResult(result)
+}
 
 function swap() {
     const swapMode = document.getElementById("swapMode");
@@ -100,17 +168,17 @@ function swap() {
                         <input type="button" swap="sci" id="percentageBtn" className="buttonOperator button" value="%" onClick={updateCal}/>
                         <input type="button" className="buttonOperator" name="/" onClick={updateCal} value="÷"/>
                         <input type="button" className="buttonOperator" onClick={clear}value="AC"/>
-                        <input swap="sci" type="button" id="onX" className="buttonOperatorSci button" value="1/x"/>
+                        <input swap="sci" type="button" id="onX" className="buttonOperatorSci button" value="1/x" onClick={onX}/>
                         <input type="button" className="button" name="9" onClick={updateCal} value="9"/>
                         <input type="button" className="button" name="8" onClick={updateCal} value="8"/>
                         <input type="button" className="button" name="7" onClick={updateCal} value="7"/>
                         <input type="button" className="buttonOperator" name="*" onClick={updateCal} value="×"/>
-                        <input swap="sci" type="button" id="piBtn" className="buttonOperatorSci button" value="π"/>
+                        <input swap="sci" type="button" id="piBtn" className="buttonOperatorSci button" value="π" onClick={Pi}/>
                         <input type="button" className="button" name="6" onClick={updateCal} value="6"/>
                         <input type="button" className="button" name="5" onClick={updateCal} value="5"/>
                         <input type="button" className="button" name="4" onClick={updateCal}value="4"/>
                         <input type="button" className="buttonOperator" name="-" onClick={updateCal}value="-"/>
-                        <input swap="sci" type="button" id="eulersBtn" className="buttonOperatorSci button" value="e"/>
+                        <input swap="sci" type="button" id="eulersBtn" className="buttonOperatorSci button" value="e" onClick={Exponential}/>
                         <input type="button" className="button" name="3" onClick={updateCal}value="3"/>
                         <input type="button" className="button" name="2" onClick={updateCal}value="2"/>
                         <input type="button" className="button" name="1" onClick={updateCal}value="1"/>
@@ -123,6 +191,6 @@ function swap() {
             </div>
         </div>
   )
-}
+  }
 
 export default Cal;
