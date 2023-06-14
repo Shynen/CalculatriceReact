@@ -24,53 +24,6 @@ const Cal = () => {
         }
     }
 
-    function replacer(str) {
-      const scndBtn = document.getElementById("scndBtn");
-      const degRadBtn = document.getElementById("degRadBtn");
-      if (scndBtn.classList.contains("buttonsSec")) {
-        var pairs = {
-          acos: "Math.acos",
-          asin: "Math.asin",
-          atan: "Math.atan",
-          lg: "Math.log10",
-          ln: "Math.log",
-          π: "Math.PI",
-          e: "Math.E",
-          "√": "Math.sqrt",
-        };
-      } else if (
-        !scndBtn.classList.contains("buttonsSec") &&
-        degRadBtn.value == "deg"
-      ) {
-        var pairs = {
-          cos: "dTrig(Math.cos,",
-          sin: "dTrig(Math.sin,",
-          tan: "dTrig(Math.tan,",
-          lg: "Math.log10",
-          ln: "Math.log",
-          π: "Math.PI",
-          e: "Math.E",
-          "√": "Math.sqrt",
-        };
-      } else {
-        var pairs = {
-          cos: "Math.cos",
-          sin: "Math.sin",
-          tan: "Math.tan",
-          lg: "Math.log10",
-          ln: "Math.log",
-          π: "Math.PI",
-          e: "Math.E",
-          "√": "Math.sqrt",
-        };
-      }
-    
-      Object.keys(pairs).forEach(function (key) {
-        let str = str.split(key).join(pairs[key]);
-      });
-console.log(str)
-      return setResult(str);
-    }
   // fais passer le cosinus / sinus / tangente avec le 2nd  et l'enleve en repassage
 
 function second() {
@@ -112,9 +65,13 @@ function onX() {
     resultat = 1 / [table[0]];
     return setResult(resultat);
   }
-
-// #Passage calculatrice Scientifique / standard
-
+  function xY() {
+    return setResult(Math.pow(cal[0],cal[1]))
+}
+function racine() {
+  let result= Math.sqrt(cal)
+  return setResult(result)
+}
 function Pi() {
   let result= cal*Math.PI
   return setResult(result)
@@ -123,7 +80,7 @@ function Exponential() {
   let result= cal*Math.E
   return setResult(result)
 }
-
+// #Passage calculatrice Scientifique / standard
 function swap() {
     const swapMode = document.getElementById("swapMode");
     const box = document.getElementById("box");
@@ -158,10 +115,10 @@ function swap() {
                         <input swap="sci" second="sec" type="button" id="sinBtn" className="buttonOperatorSci button" value=" sin"/>
                         <input swap="sci" second="sec" type="button" id="cosBtn" className="buttonOperatorSci button" value=" cos"/>
                         <input swap="sci" second="sec" type="button" id="tanBtn" className="buttonOperatorSci button" value=" tan"/>
-                        <input swap="sci" type="button" id="exponentiationBtn" className="buttonOperatorSci buttonSpe" value="xY"/>
+                        <input swap="sci" type="button" id="exponentiationBtn" className="buttonOperatorSci buttonSpe" value="xY" onClick={xY}/>
                         <input swap="sci" type="button" id="lgBtn" className="buttonOperatorSci button" value=" lg"/>
 						            <input swap="sci" type="button" id="lnBtn" className="buttonOperatorSci button" value=" ln"/>
-                        <input swap="sci" type="button" id="racineSquareBtn" className="buttonOperatorSci button" onClick={updateCal} value=" √"/>
+                        <input swap="sci" type="button" id="racineSquareBtn" className="buttonOperatorSci button" onClick={racine} value=" √"/>
                         <input swap="sci" type="button" id="factorialBtn" className="buttonOperatorSci button" value="!" onClick={getFactoriel}/>
                         <input type="button" className="buttonOperator" name="(" onClick={updateCal} value="("/>
                         <input type="button" className="buttonOperator" name=")" onClick={updateCal} value=")"/>
@@ -186,7 +143,7 @@ function swap() {
                         <input type="image" id="swapModeBtn" className="button" src={Calc} alt="swapImg" onClick={swap}/>
                         <input type="button" className="button" name="0" onClick={updateCal}value="0"/>
                         <input type="button" className="button" name="." onClick={updateCal}value="."/>
-                        <input type="button" className="buttonOperator" onClick={results}value="="/>
+                        <input type="button" className="buttonOperator" onClick={results}value="=" id="equalBtn"/>
                    </div> 
             </div>
         </div>
