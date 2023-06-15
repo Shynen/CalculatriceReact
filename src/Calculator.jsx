@@ -2,7 +2,27 @@ import React, { useState } from 'react'
 import "../src/Style/Calculatrice.scss"
 import Calc from "../src/assets/calculatrice.png"
 
+
+
 const Cal = () => {
+
+  const [data, setData] = React.useState(null);
+  React.useEffect(() => {
+    fetch("/api")
+      .then((res) => {
+        if(res.ok) {
+          return res.json();
+        }
+        else {
+          throw new Error("Erreur de api backend");
+        }
+      })
+    .then((data) => setData(data))
+    .catch((error) => console.error("Erreur lors de la recuperation des données", error));
+  }, []);
+
+
+
     const [cal, setCal] = useState("");
     const [result, setResult] = useState("");
 
@@ -105,7 +125,7 @@ function swap() {
   return (
     <div className="CalculatriceApp">
         <div className="box" id="box" >
-            <div className="container" id="container"><p >Calculatrice Incroyable</p></div>
+            <div className="container" id="container"><p>{!data ? "?" : data.text.message}</p></div>
                 <div className="display">{cal || 0}</div>
                     <div className="result"><span >{result || ''}</span>
                     </div>
@@ -120,28 +140,28 @@ function swap() {
 						            <input swap="sci" type="button" id="lnBtn" className="buttonOperatorSci button" value=" ln"/>
                         <input swap="sci" type="button" id="racineSquareBtn" className="buttonOperatorSci button" onClick={racine} value=" √"/>
                         <input swap="sci" type="button" id="factorialBtn" className="buttonOperatorSci button" value="!" onClick={getFactoriel}/>
-                        <input type="button" className="buttonOperator" name="(" onClick={updateCal} value="("/>
-                        <input type="button" className="buttonOperator" name=")" onClick={updateCal} value=")"/>
+                        <input type="button" className="buttonOperator" name="(" onClick={updateCal} value={!data ? "?" : data.text.prtg}/>
+                        <input type="button" className="buttonOperator" name=")" onClick={updateCal} value={!data ? "?" : data.text.prtg}/>
                         <input type="button" swap="sci" id="percentageBtn" className="buttonOperator button" value="%" onClick={updateCal}/>
-                        <input type="button" className="buttonOperator" name="/" onClick={updateCal} value="÷"/>
+                        <input type="button" className="buttonOperator" name="/" onClick={updateCal} value={!data ? "?" : data.text.div}/>
                         <input type="button" className="buttonOperator" onClick={clear}value="AC"/>
                         <input swap="sci" type="button" id="onX" className="buttonOperatorSci button" value="1/x" onClick={onX}/>
-                        <input type="button" className="button" name="9" onClick={updateCal} value="9"/>
-                        <input type="button" className="button" name="8" onClick={updateCal} value="8"/>
-                        <input type="button" className="button" name="7" onClick={updateCal} value="7"/>
-                        <input type="button" className="buttonOperator" name="*" onClick={updateCal} value="×"/>
+                        <input type="button" className="button" name="9" onClick={updateCal} value={!data ? "?" : data.text.nmb9}/>
+                        <input type="button" className="button" name="8" onClick={updateCal} value={!data ? "?" : data.text.nmb8}/>
+                        <input type="button" className="button" name="7" onClick={updateCal} value={!data ? "?" : data.text.nmb7}/>
+                        <input type="button" className="buttonOperator" name="*" onClick={updateCal} value={!data ? "?" : data.text.mult}/>
                         <input swap="sci" type="button" id="piBtn" className="buttonOperatorSci button" value="π" onClick={Pi}/>
-                        <input type="button" className="button" name="6" onClick={updateCal} value="6"/>
-                        <input type="button" className="button" name="5" onClick={updateCal} value="5"/>
-                        <input type="button" className="button" name="4" onClick={updateCal}value="4"/>
-                        <input type="button" className="buttonOperator" name="-" onClick={updateCal}value="-"/>
+                        <input type="button" className="button" name="6" onClick={updateCal} value={!data ? "?" : data.text.nmb6}/>
+                        <input type="button" className="button" name="5" onClick={updateCal} value={!data ? "?" : data.text.nmb5}/>
+                        <input type="button" className="button" name="4" onClick={updateCal}value={!data ? "?" : data.text.nmb4}/>
+                        <input type="button" className="buttonOperator" name="-" onClick={updateCal}value={!data ? "?" : data.text.minus}/>
                         <input swap="sci" type="button" id="eulersBtn" className="buttonOperatorSci button" value="e" onClick={Exponential}/>
-                        <input type="button" className="button" name="3" onClick={updateCal}value="3"/>
-                        <input type="button" className="button" name="2" onClick={updateCal}value="2"/>
-                        <input type="button" className="button" name="1" onClick={updateCal}value="1"/>
-                        <input type="button" className="buttonOperator" name="+" onClick={updateCal}value="+"/>
+                        <input type="button" className="button" name="3" onClick={updateCal}value={!data ? "?" : data.text.nmb3}/>
+                        <input type="button" className="button" name="2" onClick={updateCal}value={!data ? "?" : data.text.nmb2}/>
+                        <input type="button" className="button" name="1" onClick={updateCal}value={!data ? "?" : data.text.nmb1}/>
+                        <input type="button" className="buttonOperator" name="+" onClick={updateCal}value={!data ? "?" : data.text.add}/>
                         <input type="image" id="swapModeBtn" className="button" src={Calc} alt="swapImg" onClick={swap}/>
-                        <input type="button" className="button" name="0" onClick={updateCal}value="0"/>
+                        <input type="button" className="button" name="0" onClick={updateCal}value={!data ? "?" : data.text.nmb0}/>
                         <input type="button" className="button" name="." onClick={updateCal}value="."/>
                         <input type="button" className="buttonOperator" onClick={results}value="=" id="equalBtn"/>
                    </div> 
