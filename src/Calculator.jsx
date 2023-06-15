@@ -144,7 +144,7 @@ function swap() {
                         <input type="button" className="buttonOperator" name=")" onClick={updateCal} value={!data ? "?" : data.text.prtg}/>
                         <input type="button" swap="sci" id="percentageBtn" className="buttonOperator button" value="%" onClick={updateCal}/>
                         <input type="button" className="buttonOperator" name="/" onClick={updateCal} value={!data ? "?" : data.text.div}/>
-                        <input type="button" className="buttonOperator" onClick={clear}value="AC"/>
+                        <input type="button" className="buttonOperator" onClick={clear}value={!data ? "?" : data.text.clear}/>
                         <input swap="sci" type="button" id="onX" className="buttonOperatorSci button" value="1/x" onClick={onX}/>
                         <input type="button" className="button" name="9" onClick={updateCal} value={!data ? "?" : data.text.nmb9}/>
                         <input type="button" className="button" name="8" onClick={updateCal} value={!data ? "?" : data.text.nmb8}/>
